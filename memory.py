@@ -3,10 +3,8 @@ numbers = ["1", "1", "2", "2", "3", "3", "4", "4", "5", "5", "6", "6", "7", "7",
 board = [["", "", "", ""], ["", "", "", ""], ["", "", "", ""], ["", "", "", ""]]
 printed_board = [["", "", "", ""], ["", "", "", ""], ["", "", "", ""], ["", "", "", ""]]
 solved_numbers = []
-print "x denotes that that number has been solved. "" means that that number is hidden from view"
-for i in printed_board:
-    print i
-print
+print "Welcome to memory game!"
+print "x denotes that that number has been solved. %r means that that number is hidden from view" % ""
 
 def make_board():
     for a in range(4):
@@ -16,11 +14,11 @@ def make_board():
             del numbers[number]
 
 def print_board():
-    for i in solved_numbers:
-        for a in range(4):
-            for b in range(4):
-                if printed_board[a][b] == i:
-                    printed_board[a][b] = "x"
+    print solved_numbers
+    for a in range(4):
+        for b in range(4):
+            if board[a][b] in solved_numbers:
+                printed_board[a][b] = board[a][b]
     for i in printed_board:
         print i
     print
@@ -39,29 +37,34 @@ def show_input(x, y):
                     printed_board[a][b] == "x"
 
 def user_input():
-    x1 = raw_input("Enter the x coordinate of the 1st number: ")
-    x1 = int(x1)
-    y1 = raw_input("Enter the y coordinate of the 1st number: ")
-    y1 = int(y1)
+    x1, y1 = take_valid_input1()
     show_input(x1, y1)
-    x2 = raw_input("Enter the x coordinate of the 2nd number: ")
-    x2 = int(x2)
-    y2 = raw_input("Enter the y coordinate of the 2nd number: ")
-    y2 = int(y2)
+    x2, y2 = take_valid_input2(x1, y1)
     show_input(x2, y2)
     if board[x1][y1] == board[x2][y2]:
         solved_numbers.append(board[x1][y1])
-    print solved_numbers
+    print_board()
+
+def take_valid_input1():
+    while True:
+        x1 = int(raw_input("Enter the x coordinate of the 1st number: "))
+        y1 = int(raw_input("Enter the y coordinate of the 1st number: "))
+        if printed_board[x1][y1] == "":
+            return x1, y1
+
+def take_valid_input2(x1, y1):
+    coordinate1 = x1, y1
+    while True:
+        x2 = int(raw_input("Enter the x coordinate of the 2nd number: "))
+        y2 = int(raw_input("Enter the y coordinate of the 2nd number: "))
+        coordinate2 = x2, y2
+        if printed_board[x1][y1] == "" and coordinate1 != coordinate2:
+            return x2, y2
 
 def main():
     make_board()
-    count = 0
-    for a in range(4):
-        for b in range(4):
-            if printed_board[a][b] == "x":
-                count += 1
-    while count < 16:
+    while len(solved_numbers) < 8:
         user_input()
+    print "YOU WIN!!!"
 
-if __name__ == "__main__":
-    main()
+main()

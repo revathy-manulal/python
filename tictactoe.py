@@ -13,7 +13,7 @@ def user_input():
     userX = int(userX)
     userY = raw_input("In which column would you like to play? ")
     userY = int(userY)
-    if board[userX][userY] == 0:
+    if board[userX][userY] == "0":
         board[userX][userY] = "2"
     else:
         print "You entered invalid coordinates. Try again."
